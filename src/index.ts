@@ -18,10 +18,10 @@ async function handleTTS(request: Request, env: Env): Promise<Response> {
   const body = await request.json() as {text?:string};
   const text=(body.text||"").trim().slice(0,3000);
   if(!text) return new Response("No text",{status:400});
-  const audio=await fetch("https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM?output_format=mp3_44100_128",{
+  const audio=await fetch("https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL?output_format=mp3_44100_128",{
    method:"POST",
    headers:{"xi-api-key":env.ELEVENLABS_API_KEY,"Content-Type":"application/json"},
-   body:JSON.stringify({text,model_id:"eleven_turbo_v2_5",voice_settings:{stability:0.48,similarity_boost:0.82,style:0.22,use_speaker_boost:true}})
+   body:JSON.stringify({text,model_id:"eleven_multilingual_v2",voice_settings:{stability:0.35,similarity_boost:0.88,style:0.35,use_speaker_boost:true}})
   });
   return audio as Response;
  } catch(error){ console.error(error); return new Response("TTS failed",{status:500}); }
