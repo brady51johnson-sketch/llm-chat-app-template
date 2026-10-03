@@ -12,6 +12,7 @@ export interface Env {
 	 * Binding for static assets.
 	 */
 	ASSETS: { fetch: (request: Request) => Promise<Response> };
+	ELEVENLABS_API_KEY: string;
 }
 
 /**
