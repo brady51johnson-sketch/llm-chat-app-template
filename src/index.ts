@@ -18,7 +18,7 @@ async function handleTTS(request: Request, env: Env): Promise<Response> {
   const body = await request.json() as {text?:string};
   const text=(body.text||"").trim().slice(0,3000);
   if(!text) return new Response("No text",{status:400});
-  const audio=await env.AI.run("@cf/deepgram/aura-2-en",{text,speaker:"luna",encoding:"mp3"},{returnRawResponse:true});
+  const audio=await env.AI.run("@cf/deepgram/aura-2-en",{text,speaker:"asteria",encoding:"mp3"},{returnRawResponse:true});
   return audio as Response;
  } catch(error){ console.error(error); return new Response("TTS failed",{status:500}); }
 }
