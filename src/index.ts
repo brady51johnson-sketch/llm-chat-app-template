@@ -8,9 +8,20 @@ export default {
   const url = new URL(request.url);
   if (url.pathname === "/" || !url.pathname.startsWith("/api/")) return env.ASSETS.fetch(request);
   if (url.pathname === "/api/chat" && request.method === "POST") return handleChat(request, env);
+  if (url.pathname === "/api/tts" && request.method === "POST") return handleTTS(request, env);
   return new Response("Not found", {status:404});
  }
 } satisfies ExportedHandler<Env>;
+
+async function handleTTS(request: Request, env: Env): Promise<Response> {
+ try {
+  const body = await request.json() as {text?:string};
+  const text=(body.text||"").trim().slice(0,3000);
+  if(!text) return new Response("No text",{status:400});
+  const audio=await env.AI.run("@cf/myshell-ai/melotts",{prompt:text,lang:"en"},{returnRawResponse:true});
+  return audio as Response;
+ } catch(error){ console.error(error); return new Response("TTS failed",{status:500}); }
+}
 
 async function handleChat(request: Request, env: Env): Promise<Response> {
  try {
